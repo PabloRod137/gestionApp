@@ -1,0 +1,35 @@
+/* Tipografía propia, alojada en /fonts (no se pide nada a Google): Inter para el texto y Source Serif 4 para los títulos. */
+@font-face {
+  font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('/fonts/inter-latin-wght-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Source Serif 4'; font-style: normal; font-weight: 200 900; font-display: swap;
+  src: url('/fonts/source-serif-4-latin-wght-normal.woff2') format('woff2');
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Identidad compartida con la web pública ── */
+body { font-variant-numeric: lining-nums; -webkit-font-smoothing: antialiased; }
+.font-brand-sans { font-family: 'Inter', system-ui, sans-serif; }
+.font-brand-serif,
+h1.font-brand-serif, h2.font-brand-serif, h3.font-brand-serif { font-family: 'Source Serif 4', Georgia, serif; font-weight: 600; letter-spacing: -.012em; }
+.color-gold-warm { color: #6B5A1A; }
+.color-forest-dark { color: #6B5A1A; }
+.color-gold-bright { color: #6B5A1A; }
+.tabular-nums { font-variant-numeric: lining-nums tabular-nums; }
+:focus-visible { outline: 3px solid #2563EB; outline-offset: 2px; }
+
+/* ── Tablas del portal: en pantallas pequeñas cada fila pasa a ser una tarjeta (nada se corta ni se sale) ── */
+@media (max-width: 767px) {
+  .tabla-resp thead { display: none; }
+  .tabla-resp, .tabla-resp tbody, .tabla-resp tr, .tabla-resp td { display: block; width: 100%; }
+  .tabla-resp tr { padding: .9rem 1rem; border-top: 1px solid #DDD9CC; }
+  .tabla-resp tbody tr:first-child { border-top: 0; }
+  .tabla-resp td { padding: .25rem 0 !important; text-align: left !important; }
+  .tabla-resp td[data-l]::before { content: attr(data-l); display: block; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #5A5F63; margin-bottom: .1rem; }
+  .tabla-resp td[colspan] { padding: 2rem 0 !important; text-align: center !important; }
+}
