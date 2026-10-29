@@ -3,7 +3,7 @@
 /*
 | Conocimiento documental local: inventario de las carpetas de cada cliente, lectura del texto (con OCR si hace falta)
 | y propuestas («hallazgos») que una persona acepta o rechaza una a una. Todo ocurre en este equipo: ningún documento
-| sale a ningún servicio. Apagado por defecto. Ver docs/INDEXACION_DOCUMENTAL.md.
+| sale a ningún servicio. Apagado por defecto.
 */
 return [
     'activo' => (bool) env('DOCUMENTAL_ACTIVO', false),

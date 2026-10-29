@@ -2,7 +2,7 @@
 
 /*
 | Qué hechos del despacho piden una factura y cuándo se prepara. El programa NUNCA emite solo: prepara borradores
-| que una persona revisa y emite (Veri*Factu: una factura emitida ya no se toca). Ver docs/AUTOMATIZACION.md.
+| que una persona revisa y emite (Veri*Factu: una factura emitida ya no se toca).
 */
 return [
     // Momento en que un servicio se factura si el propio servicio no indica otro: 'apertura' (al abrir el expediente)

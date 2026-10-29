@@ -21,7 +21,7 @@ Guía completa: `docs/correo-microsoft-365.md`. Resumen:
 6. Prueba: preparar una comunicación con un destinatario propio → *Crear borrador ahora* → comprobar que aparece en Borradores con su PDF y que **no se envía**.
 
 ## 2. SharePoint ↔ panel: estados y actividad (Power Automate)
-Guía completa: `docs/puente-sharepoint.md`. Para empezar, la **vía A (carpeta sincronizada)**, que no necesita que el programa sea accesible desde Internet:
+Para empezar, la **vía A (carpeta sincronizada)**, que no necesita que el programa sea accesible desde Internet:
 1. Crear en SharePoint la subcarpeta de intercambio (por ejemplo `00_CONTROL\imports-nortia`) y **sincronizarla con OneDrive** en el equipo del programa.
 2. `.env`: `SYNC_EXPORT_DIR=` la ruta local de esa carpeta, `SYNC_EXPORT_ENABLED=true`.
 3. Crear el **flujo de Power Automate** «Cuando se crea un archivo» en esa carpeta que lea el JSON y cree/actualice elementos en *Registro_Actividad_Expediente* y el estado en *Expedientes* (pasos en la guía). Estados admitidos: No iniciado, En curso, Completado.
@@ -29,7 +29,6 @@ Guía completa: `docs/puente-sharepoint.md`. Para empezar, la **vía A (carpeta 
 5. Más adelante, **vía B (API)** cuando el programa esté alojado en un servidor accesible: `POWER_AUTOMATE_API_TOKEN` (largo y aleatorio) y el flujo con HTTP.
 
 ## 3. Documentos de los clientes: lectura local (indexación)
-Guía: `docs/INDEXACION_DOCUMENTAL.md`.
 1. La biblioteca de documentos (la que contiene `01_CLIENTES`) **sincronizada con OneDrive en el equipo** donde corre el programa. Mejor «Mantener siempre en este dispositivo» para que los archivos estén realmente descargados.
 2. `.env`: `DOCUMENTAL_RAIZ=` la ruta local de esa biblioteca (y `IA_CARPETAS_RAIZ=` la misma, para la IA local).
 3. Instalar **Tesseract** (español) y **Poppler** para los escaneados (opcional al principio).

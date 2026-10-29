@@ -101,4 +101,4 @@ php artisan site:readiness  # lista lo que falta antes de publicar la web (es no
 | Vistas del expediente | `resources/views/panel/expedientes/partials/` |
 
 ## 9. Cosas conocidas (no son errores de instalación)
-Ver `docs/AUDITORIA_2026-10.md`: integraciones heredadas que no se usan en el panel (WhatsApp, IMAP, clasificación con la API de Anthropic), datos de contacto de la web pendientes y lo que falta para publicar.
+Integraciones heredadas que no forman parte del flujo actual del panel (WhatsApp, IMAP, clasificación con la API de Anthropic): están apagadas por defecto y se activan solo si se configuran sus variables de entorno. Los datos de contacto de la web (`SITE_*`) vienen vacíos hasta que se configuran; mientras tanto, `php artisan site:readiness` bloquea la publicación.
