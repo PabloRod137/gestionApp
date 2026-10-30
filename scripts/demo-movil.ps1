@@ -1,4 +1,4 @@
-﻿# Demostración de LexGuardian con DATOS INVENTADOS, para enseñarla desde el móvil en la misma wifi.
+﻿# Demostración de Nortia con DATOS INVENTADOS, para enseñarla desde el móvil en la misma wifi.
 #   Uso (PowerShell, desde la carpeta del proyecto):   .\scripts\demo-movil.ps1
 # Crea una base temporal con los datos de ejemplo (nunca toca database\despacho.sqlite, que es la real),
 # arranca el servidor abierto a la red local y escribe la dirección que hay que teclear en el móvil.
@@ -9,7 +9,7 @@ param([int]$Puerto = 8095)
 $ErrorActionPreference = 'Stop'
 Set-Location (Split-Path $PSScriptRoot -Parent)
 
-$carpeta = Join-Path ([IO.Path]::GetTempPath()) 'lexguardian-demo'
+$carpeta = Join-Path ([IO.Path]::GetTempPath()) 'nortia-demo'
 New-Item -ItemType Directory -Force $carpeta | Out-Null
 $db = Join-Path $carpeta 'demo.sqlite'
 if (Test-Path $db) { Remove-Item $db -Force }

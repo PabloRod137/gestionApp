@@ -13,12 +13,12 @@
 @endphp
 <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/source-serif-4-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{{ $asset('css/main.css') }}">
+@vite('resources/css/app.css')
 <link rel="icon" type="image/png" href="/assets/logo-mark.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 @stack('head')
 </head>
-<body data-nav="@yield('nav')">
+<body data-nav="@yield('nav')" class="font-sans text-gray-700 bg-gray-50 antialiased max-w-full overflow-x-hidden">
 @include('site.partials.header')
 <main id="content">
 @yield('content')

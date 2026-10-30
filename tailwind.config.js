@@ -37,7 +37,14 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        // El JS de la web pública inserta algunas clases por su cuenta (p. ej. el campo trampa
+        // antispam en ui.js): sin escanear estos ficheros, Tailwind las purga por "no usadas".
+        './public/js/**/*.js',
     ],
+
+    // Clases que booking.js arma por interpolación (`calendar-day--${state}`): el escaneo de
+    // contenido no evalúa JS, así que no las ve escritas literalmente. Sin esto, Tailwind las purga.
+    safelist: ['calendar-day--available', 'calendar-day--selected', 'calendar-day--disabled'],
 
     theme: {
         extend: {

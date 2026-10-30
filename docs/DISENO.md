@@ -4,11 +4,13 @@ Una sola identidad para la web pública, el acceso de clientes y el portal del c
 Sale del logo: **grafito cálido** del escudo, **oro oliva** del círculo y **marfil** de fondo.
 
 ## Dónde está
-- `public/css/main.css` — web pública y acceso de clientes. Tokens en `:root` (`--grafito-*`, `--oro-*`, `--marfil`, `--arena`, `--ok/--aviso/--error/--info`).
-- `tailwind.config.js` + `resources/css/app.css` — portal del cliente y panel (Tailwind). Las escalas `gray`, `emerald`, `amber`, `rose`, `blue` y `purple` están sustituidas por tonos apagados de la misma gama: las clases de las vistas ya salen en la paleta sin tocar cada pantalla. `npm run build` tras cualquier cambio.
-- `public/css/chat-cliente.css` — burbuja y conversación del asistente del cliente.
+Todo pasa por un único pipeline de Tailwind/Vite — ya no hay una hoja de estilos aparte escrita a mano.
+- `tailwind.config.js` — paleta de marca. Las escalas `gray`, `emerald`, `amber`, `rose`/`red` y `purple` están sustituidas por tonos de la misma gama (`gray`=grafito, `purple`=oro, `emerald`=ok, `amber`=aviso, `red`=error, `blue`=info): las utilidades de Tailwind (`bg-gray-900`, `text-purple-300`...) ya salen en la paleta de Nortia sin tocar cada pantalla.
+- `resources/css/app.css` — fuentes (`@font-face`), y, dentro de `@layer components`, lo que una utilidad de Tailwind no puede expresar bien: degradados (`.hero`, `.product-hero`), el menú móvil y la burbuja del asistente (compartida por la web pública y el área de cliente), animaciones y estados que alterna el JS (`.calendar-day--*`, `.toast.active`...). Todo lo demás (layout, espaciado, tipografía) va como utilidades directamente en las vistas. `npm run build` tras cualquier cambio.
 - `public/fonts/` — **Inter** (texto) y **Source Serif 4** (títulos), variables, con sus licencias (SIL OFL). Se sirven desde el propio servidor: no se pide nada a Google (RGPD).
 - `resources/views/components/icono.blade.php` — iconos de línea SVG (`<x-icono n="tel" />`). No se usan emojis: cambian con cada sistema operativo.
+
+**Clases que arma el JS por interpolación** (p. ej. `` `calendar-day--${state}` `` en `booking.js`): Tailwind no evalúa JS, así que no las ve y las purga en silencio aunque la regla exista en `app.css`. Hace falta que la clase completa aparezca escrita en algún `.js` bajo `public/js/` (ya escaneado por `content` en `tailwind.config.js`) o añadirla a `safelist`. `IdentidadVisualTest` vigila que las ya conocidas sigan sobreviviendo a la purga.
 
 ## Reglas
 - **Contraste (WCAG AA, ≥ 4,5:1):** sobre oscuro, el texto dorado es `--oro-300` (`#D5C27A`, 7,6:1); sobre claro, `--oro-700` (`#6B5A1A`, 6,6:1). El oro vivo (`--oro-500`) solo en botones (con texto `#1B1E21`) y filetes. Texto secundario `--texto-suave`.

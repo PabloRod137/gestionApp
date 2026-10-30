@@ -143,7 +143,6 @@
 
     <!-- Asistente privado del cliente (sin IA): solo trata los datos de quien ha iniciado sesión -->
     @if(Auth::user()?->client)
-        <link rel="stylesheet" href="/css/chat-cliente.css">
         <script type="module" src="/js/features/chat/client-bubble.js"></script>
     @endif
 
