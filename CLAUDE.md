@@ -1,11 +1,11 @@
 # Nortia · Panel y web de gestoría/despacho profesional
 
-Laravel 13 / PHP 8.3+, Blade, Eloquent, Spatie permission, SQLite en pruebas, MySQL en producción.
+Laravel 13 / PHP 8.3+, Blade, Eloquent, Spatie permission, MySQL en local y producción, SQLite solo en pruebas (en memoria, `tests/bootstrap.php`).
 
 ## Reglas que no se rompen
 - **Cero IA al generar documentos.** Rellenar plantillas es sustitución de marcas (`App\Support\GeneradorDocumentos`). La IA, si se añade, es opcional, apagada por defecto, solo propone y una persona confirma.
 - **Nunca se envía un correo desde el programa.** Solo se crean borradores en Microsoft 365 (`App\Support\Outlook`) que una persona revisa y envía desde Outlook. No añadir ninguna operación de envío.
-- **Datos reales de clientes:** nunca en el repositorio, en el chat ni en pruebas. Las pruebas usan datos inventados. Una base real solo vive en un `.sqlite` local ignorado por git, cargada con `php artisan despacho:importar <fichero>`.
+- **Datos reales de clientes:** nunca en el repositorio, en el chat ni en pruebas. Las pruebas usan datos inventados. Una base real solo vive en su propia base MySQL local, nunca en git, cargada con `php artisan despacho:importar <fichero>`.
 - **Claves y credenciales** (Stripe, Microsoft, etc.) solo en el `.env` del servidor. No cambiar `APP_KEY` tras publicar (las claves de reserva se derivan de ella).
 - **Los seeders de ejemplo** (`db:seed`) crean usuarios con contraseñas conocidas: están bloqueados en producción salvo `ALLOW_SAMPLE_DATA=1`. El primer usuario real se crea con `php artisan despacho:crear-usuario`.
 - **La clasificación de documentos con la API de Anthropic (nube)** (`DocumentClassificationService`, `ProcessPowerAutomateDocumentJob`) NO está aprobada para datos de clientes: dejar `ANTHROPIC_API_KEY` vacía. La IA del despacho es solo local (Ollama).
@@ -39,12 +39,11 @@ Laravel 13 / PHP 8.3+, Blade, Eloquent, Spatie permission, SQLite en pruebas, My
 ## Trabajar en local
 Guía paso a paso: `docs/ARRANCAR_EN_LOCAL.md`. Comandos: `despacho:importar`, `despacho:sincronizar`, `despacho:plantillas`, `despacho:recetas`, `despacho:crear-usuario`, `despacho:borradores`, `verifactu:estado`, `verifactu:enviar`, `facturas:fin-de-mes`, `documentos:inventariar`, `documentos:barrido`. Scripts: `scripts/arrancar-panel.ps1`, `scripts/trabajador-documental.ps1`. Conectar Microsoft: `docs/CONECTAR_MICROSOFT.md`.
 ```powershell
-$env:DB_CONNECTION='sqlite'; $env:DB_DATABASE='<ruta>\database\despacho.sqlite'; $env:SESSION_DRIVER='file'; $env:CACHE_STORE='file'; $env:QUEUE_CONNECTION='sync'; $env:MAIL_MAILER='log'
 php artisan serve --host=127.0.0.1 --port=8099
-php artisan test        # todas deben pasar
+php artisan test        # todas deben pasar (SQLite en memoria; no toca la base MySQL de `.env`)
 npm run build           # tras cambiar vistas con clases nuevas de Tailwind
 ```
-`.env.example` ya está preparado para SQLite en local (copiarlo a `.env`); el `.env` de Sail apunta a un MySQL que solo existe allí. `composer` en PHP 8.5 necesita `--ignore-platform-req=php`.
+`.env.example` ya está preparado para MySQL (copiarlo a `.env`): con Laravel Sail (`./vendor/bin/sail up -d`) no hay que tocar nada, levanta el mismo MySQL que pide `compose.yaml`; con un MySQL propio, crea la base `nortia` y ajusta usuario/contraseña si no son `root`/vacía. `composer` en PHP 8.5 necesita `--ignore-platform-req=php`.
 
 ## Pendiente
 Datos legales y precios reales del despacho que use este software; claves de prueba de Stripe; hosting con MySQL; texto jurídico de los modelos por revisar; asignar plantillas a servicios; doble factor; blog público desde la base de datos; IA local (Ollama) decidida y en marcha en local con `IA_ENABLED=true` (modelo qwen3:4b-instruct-2507-q4_K_M); falta apuntar `IA_CARPETAS_RAIZ` a las carpetas de clientes y revisar su encaje con la protección de datos.

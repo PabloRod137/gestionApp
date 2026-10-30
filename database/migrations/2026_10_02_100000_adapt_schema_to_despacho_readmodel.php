@@ -80,7 +80,8 @@ return new class extends Migration
             $table->foreignId('document_template_id')->constrained()->cascadeOnDelete();
             $table->unsignedSmallInteger('prioridad')->nullable();
             $table->boolean('obligatorio')->default(false);
-            $table->unique(['service_id', 'document_template_id']);
+            // Nombre explícito: el autogenerado supera los 64 caracteres que admite MySQL como identificador.
+            $table->unique(['service_id', 'document_template_id'], 'service_document_templates_service_template_unique');
         });
 
         Schema::create('communities', function (Blueprint $table) {

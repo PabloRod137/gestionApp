@@ -111,7 +111,7 @@ Un ejemplo de importación repetible desde una base de datos de lectura externa 
 - **Registro de auditoría** (`AuditLog`) de las acciones importantes del panel.
 
 ### 20. Identidad visual y accesibilidad
-Un único sistema de diseño (una hoja de estilos para la web pública, Tailwind para panel y portal de cliente), iconos en SVG propio (sin emojis), contraste de color comprobado. Hay tests dedicados (`IdentidadVisualTest`) que impiden que una vista use una clase CSS sin su regla correspondiente, o que vuelva a aparecer una hoja de estilos duplicada.
+Un único sistema de diseño con Tailwind CSS para toda la aplicación (web pública, panel y portal de cliente, compilado por Vite), iconos en SVG propio (sin emojis), contraste de color comprobado. Hay tests dedicados (`IdentidadVisualTest`, `MenuMovilTest`) que vigilan que no vuelva a aparecer una hoja de estilos aparte y que cada clase propia (no de Tailwind) tenga su regla.
 
 ---
 
@@ -120,7 +120,7 @@ Un único sistema de diseño (una hoja de estilos para la web pública, Tailwind
 | Capa | Tecnología |
 |---|---|
 | Backend | PHP 8.3+, Laravel 13 |
-| Base de datos | SQLite (por defecto, sin instalar nada más) o MySQL en producción |
+| Base de datos | MySQL (local y producción); los tests corren aparte, en SQLite en memoria |
 | Frontend | Blade, Tailwind CSS, Alpine.js, Vite |
 | Roles y permisos | `spatie/laravel-permission` |
 | Suplantación de usuario | `lab404/laravel-impersonate` |
@@ -149,9 +149,10 @@ No hace falta contratar ningún servicio en la nube para que la aplicación func
 
 | Programa | Versión | Para qué |
 |---|---|---|
-| PHP | 8.3 o superior, con extensiones `sqlite3`, `pdo_sqlite`, `mbstring`, `zip`, `xml`, `curl`, `gd`, `fileinfo`, `intl` | la aplicación |
+| PHP | 8.3 o superior, con extensiones `pdo_mysql`, `pdo_sqlite` (para los tests), `mbstring`, `zip`, `xml`, `curl`, `gd`, `fileinfo`, `intl` | la aplicación |
 | Composer | 2.x | dependencias PHP |
 | Node.js | 20 o superior | compilar los estilos (`npm run build`) |
+| MySQL | 8.x (o MariaDB equivalente) | base de datos. Se puede levantar con Docker (ver abajo) o usar una instalación propia (Laragon, XAMPP, un servidor...) |
 | Microsoft Word o LibreOffice | cualquiera reciente | generar el PDF de cada documento (opcional: sin ninguno de los dos, se queda solo el Word) |
 | Ollama | reciente (opcional) | IA local; modelo `qwen3:4b-instruct-2507-q4_K_M` (~2,5 GB) |
 
@@ -163,7 +164,14 @@ npm ci
 
 cp .env.example .env
 php artisan key:generate
+```
 
+Necesitas un MySQL accesible. Dos formas:
+
+- **Con Docker (Laravel Sail), sin instalar MySQL:** `./vendor/bin/sail up -d` levanta un contenedor MySQL ya configurado igual que `.env.example` (ver `compose.yaml`). En Windows, usa `vendor\bin\sail` o `php -d short_open_tag=0 vendor/bin/sail` según tu shell.
+- **Con un MySQL que ya tengas instalado** (Laragon, XAMPP, un servidor propio...): crea una base de datos `nortia` y, si tu usuario/contraseña no son `root`/vacía, ajústalo en `.env` (`DB_USERNAME`, `DB_PASSWORD`).
+
+```bash
 php artisan migrate
 php artisan db:seed          # carga datos de ejemplo (usuarios, clientes, servicios, citas, inmuebles...)
 

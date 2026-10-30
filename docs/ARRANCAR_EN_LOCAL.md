@@ -14,9 +14,10 @@ Están en `CLAUDE.md`. Las que más importan al jugar con el programa:
 ## 1. Requisitos
 | Programa | Versión | Para qué |
 |---|---|---|
-| PHP | 8.3 o superior, con extensiones `sqlite3`, `pdo_sqlite`, `mbstring`, `zip`, `xml`, `curl`, `gd`, `fileinfo`, `intl` | la aplicación |
+| PHP | 8.3 o superior, con extensiones `pdo_mysql`, `pdo_sqlite` (solo para los tests), `mbstring`, `zip`, `xml`, `curl`, `gd`, `fileinfo`, `intl` | la aplicación |
 | Composer | 2.x | dependencias PHP (si PHP es más nuevo que el declarado: añadir `--ignore-platform-req=php`) |
 | Node.js | 20 o superior | compilar los estilos (`npm run build`) |
+| MySQL 8.x (o MariaDB equivalente) | — | base de datos, local o en un servidor. Puede ser un MySQL ya instalado (Laragon, XAMPP...) o el contenedor de Laravel Sail (`./vendor/bin/sail up -d`) |
 | Microsoft Word **o** LibreOffice | cualquiera reciente | crear el PDF de cada documento a la vez que el Word (ver abajo) |
 | Ollama (opcional) | reciente | IA local; modelo `qwen3:4b-instruct-2507-q4_K_M` (~2,5 GB) |
 
@@ -27,12 +28,10 @@ npm ci
 npm run build
 Copy-Item .env.example .env
 php artisan key:generate
-New-Item -ItemType File -Force database\despacho.sqlite | Out-Null
 ```
-Abre `.env` y pon la ruta **completa** de la base de datos:
-```
-DB_CONNECTION=sqlite
-DB_DATABASE=C:\ruta\completa\al\proyecto\database\despacho.sqlite
+`.env.example` ya está preparado para MySQL (`DB_DATABASE=nortia`, usuario `root` sin contraseña). Si tu MySQL tiene otro usuario/contraseña, o la base se llama de otra forma, ajústalo en `.env`. Crea la base si no existe:
+```powershell
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS nortia CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 `SESSION_DRIVER=file`, `CACHE_STORE=file` y `QUEUE_CONNECTION=sync` ya vienen así en `.env.example`. Después:
 ```powershell
@@ -41,6 +40,8 @@ php artisan db:seed --class=RolesSeeder
 php artisan despacho:crear-usuario tu-correo@despacho.es --nombre "Tu nombre" --rol admin
 ```
 (El último comando pide la contraseña por teclado; mínimo 12 caracteres. **No uses `db:seed` a secas**: crea usuarios de ejemplo con contraseñas conocidas y está bloqueado en producción.)
+
+Los tests (`php artisan test`) no usan esta base de datos: corren siempre en SQLite en memoria (`tests/bootstrap.php`), así que no hace falta nada especial para ellos ni se pueden ver afectados por lo que haya en MySQL.
 
 ## 3. Arrancar
 ```powershell

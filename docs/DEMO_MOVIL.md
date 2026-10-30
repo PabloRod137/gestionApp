@@ -1,6 +1,6 @@
 # Enseñar Nortia desde el móvil
 
-Todo con **datos inventados**. Nunca se usa la base real (`database/despacho.sqlite`).
+Todo con **datos inventados**, en una base SQLite temporal propia del script. Nunca toca la base real del despacho (MySQL).
 
 ## 1. Visita guiada (la forma más cómoda)
 Una página pensada para el móvil con pantallas reales: la web, el área del cliente, el asistente, el panel y el puente con SharePoint, más la lista de lo que falta por cerrar. Se publicó como página privada de Claude; solo la abre quien tenga el enlace compartido desde el menú «Compartir» de esa página. No necesita ordenador encendido.
